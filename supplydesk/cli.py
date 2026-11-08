@@ -5,8 +5,17 @@ import json
 from pathlib import Path
 import sys
 
+from supplydesk.menu import money
 from supplydesk.service import (
-    CUSTOMER_TYPES, DEFAULT_CUSTOMER_TYPE, DEFAULT_FULFILLMENT, FULFILLMENT_OPTIONS, OrderService,
+    CUSTOMER_TYPES, DEFAULT_CUSTOMER_TYPE, DEFAULT_FULFILLMENT, EXPRESS_DELIVERY_FEE_CENTS,
+    FREE_STANDARD_DELIVERY_MIN_CENTS, FULFILLMENT_OPTIONS, STANDARD_DELIVERY_FEE_CENTS,
+    OrderService,
+)
+
+FULFILLMENT_HELP = (
+    f"pickup (free), delivery ({money(STANDARD_DELIVERY_FEE_CENTS)}, free from "
+    f"{money(FREE_STANDARD_DELIVERY_MIN_CENTS)} after discount) or express "
+    f"({money(EXPRESS_DELIVERY_FEE_CENTS)}, never waived); default: {DEFAULT_FULFILLMENT}"
 )
 
 
@@ -29,12 +38,15 @@ def build_parser():
     )
     commands = parser.add_subparsers(dest="command")
     commands.add_parser("catalog", help="show products and available stock")
-    for name in ("quote", "place"):
-        command = commands.add_parser(name)
-        command.add_argument("--customer", choices=CUSTOMER_TYPES, default=DEFAULT_CUSTOMER_TYPE)
+    for name, summary in (("quote", "price a request without placing an order"),
+                          ("place", "place an order immediately (no confirmation)")):
+        command = commands.add_parser(name, help=summary)
+        command.add_argument("--customer", choices=CUSTOMER_TYPES, default=DEFAULT_CUSTOMER_TYPE,
+                             help=f"customer type; default: {DEFAULT_CUSTOMER_TYPE}")
         command.add_argument("--fulfillment", choices=FULFILLMENT_OPTIONS,
-                             default=DEFAULT_FULFILLMENT)
-        command.add_argument("--item", type=parse_item, action="append", required=True)
+                             default=DEFAULT_FULFILLMENT, help=FULFILLMENT_HELP)
+        command.add_argument("--item", type=parse_item, action="append", required=True,
+                             help="PRODUCT_ID:QUANTITY, e.g. notebook:2; repeat for more items")
     commands.add_parser("orders", help="list orders in placement order")
     show = commands.add_parser("show", help="show one order")
     show.add_argument("order_id")

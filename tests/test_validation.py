@@ -18,8 +18,9 @@ class InvalidRequestTests(ServiceTestCase):
                 self.assert_both_operations_reject(
                     "Customer type", customer, [item("notebook", 1)])
 
-    def test_fulfillment_must_be_exactly_pickup_or_delivery(self):
-        for fulfillment in ("Delivery", "", None, "express", "ship"):
+    def test_fulfillment_must_be_exactly_a_supported_option(self):
+        # CR-01 made "express" valid; it was listed here as invalid before.
+        for fulfillment in ("Delivery", "", None, "Express", "ship"):
             with self.subTest(fulfillment=fulfillment):
                 self.assert_both_operations_reject(
                     "Fulfillment", "regular", [item("notebook", 1)], fulfillment)

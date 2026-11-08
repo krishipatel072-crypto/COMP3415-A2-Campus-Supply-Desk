@@ -22,7 +22,7 @@ class MenuTests(ServiceTestCase):
         _, out, prompts = self.run_menu("2", "", "notebook", "1", "", "", "0")
         self.assertIn("Customer: regular | Fulfillment: pickup", out)
         self.assertIn("Customer type [regular/student] (Enter = regular): ", prompts)
-        self.assertIn("Fulfillment [pickup/delivery] (Enter = pickup): ", prompts)
+        self.assertIn("Fulfillment [pickup/delivery/express] (Enter = pickup): ", prompts)  # CR-01
 
     def test_non_numeric_quantity_asks_to_reenter_the_item(self):
         _, out, _ = self.run_menu("2", "", "notebook", "two", "notebook", "2", "", "", "0")
