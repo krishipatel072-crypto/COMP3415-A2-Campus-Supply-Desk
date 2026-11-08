@@ -60,6 +60,7 @@ You should see:
 Type an option number and press Enter. The program will guide you through the remaining steps.
 
 - Prices are displayed in Canadian dollars.
+- Fulfillment options: `pickup` (free), `delivery` (standard) and `express`.
 - Quotes do not create orders or reserve stock.
 - Placement and cancellation require confirmation.
 - Choose `0` to exit. You can also press `Ctrl+C`.
@@ -81,7 +82,7 @@ Then:
 3. Enter `notebook` for the product ID.
 4. Enter `2` for the quantity.
 5. Press Enter without typing another product ID to finish adding items.
-6. Press Enter at the fulfillment prompt to use `pickup`.
+6. Press Enter at the fulfillment prompt to use `pickup`. You can also type `delivery` (standard, $6.00, free from $100.00 after discount) or `express` ($12.00, never waived).
 
 With sufficient stock available, the quote should show a **$10.00 total**.
 
@@ -98,12 +99,29 @@ python -m unittest discover -s tests -v
 The supplied tests should finish with:
 
 ```text
-Ran 4 tests
+Ran 86 tests
 
 OK
 ```
 
-These four tests are a starting point. **Passing them does not mean every required behavior is correct.** You will add meaningful tests as part of the assignment.
+The suite started as four smoke tests. It now covers pricing rules and boundaries, invalid requests, order history and cancellation, the individual commands, the interactive menu, CR-01 express delivery, and golden-master transcripts of a full menu session and command session (`tests/golden/`).
+
+To run one group only, name its module, for example:
+
+```sh
+python -m unittest tests.test_express -v
+```
+
+Recorded results for each stage of the work are in `evidence/`.
+
+### Differential check (optional)
+
+`tools/compare_with_baseline.py` runs the same 30,000 random operations against the original starter service (Git tag `baseline`) and the current one, and reports any difference in results, error messages or saved files. It was used to confirm that the refactorings preserved behavior; after the defect fixes and CR-01, differences are expected. It needs Git and the `baseline` tag:
+
+```sh
+git fetch --tags
+python tools/compare_with_baseline.py
+```
 
 The supplied tests use temporary files and do not change your saved orders or stock.
 
@@ -152,7 +170,11 @@ Avoid running two instances that change the same save file simultaneously.
 - **`supplydesk/service.py`** — Quotes, orders, inventory operations, and cancellation.
 - **`supplydesk/storage.py`** — Loading and saving local JSON data.
 - **`supplydesk/catalog.json`** — Initial products, prices, and stock for a new session.
-- **`tests/test_smoke.py`** — Four starter tests.
+- **`tests/test_smoke.py`** — The four original starter tests.
+- **`tests/test_*.py`** — Pricing, validation, orders, commands, menu, CR-01 express and golden-master tests; shared fixtures in `tests/support.py`.
+- **`tools/compare_with_baseline.py`** — Differential check against the original implementation.
+- **`evidence/`** — Recorded test results before refactoring, after refactoring, after defect fixes and after CR-01.
+- **`docs/`** — CR-01 and its impact prediction.
 
 The menu and individual commands use the same service and saved data. When a later requirement affects available choices or displayed information, review both interfaces.
 
@@ -172,6 +194,7 @@ You can perform operations directly instead of using the menu. These commands ar
 python -m supplydesk catalog
 python -m supplydesk quote --customer regular --item notebook:2
 python -m supplydesk quote --customer student --fulfillment delivery --item hoodie:2
+python -m supplydesk quote --customer student --fulfillment express --item hoodie:2
 ```
 
 Use repeated `--item` options for multiple items:
