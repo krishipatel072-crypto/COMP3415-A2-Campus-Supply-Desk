@@ -1,0 +1,8 @@
+DIFFERENTIAL CHECK after refactoring: current code vs original starter (baseline tag)
+Commit: d34a061
+Command: python tools/compare_with_baseline.py
+----------------------------------------------------------------------
+Reference revision: baseline
+Random sequences: 2000 x 15 steps (seed 3415)
+Operations compared: 30000
+Mismatches (result, error or saved file): 0
