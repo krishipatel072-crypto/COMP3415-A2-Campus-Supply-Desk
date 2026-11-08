@@ -1,0 +1,24 @@
+CR-01 DEMO: individual commands run against a fresh practice save file
+Commit: 4060231
+----------------------------------------------------------------------
+$ python -m supplydesk --data .supplydesk/cr01-demo.json quote --customer regular --fulfillment express --item notebook:2
+  -> {'fulfillment': 'express', 'subtotal_cents': 1000, 'discount_cents': 0, 'delivery_cents': 1200, 'total_cents': 2200}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json quote --customer student --fulfillment express --item hoodie:2
+  -> {'fulfillment': 'express', 'subtotal_cents': 8000, 'discount_cents': 800, 'delivery_cents': 1200, 'total_cents': 8400}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json quote --customer regular --fulfillment delivery --item hoodie:3
+  -> {'fulfillment': 'delivery', 'subtotal_cents': 12000, 'discount_cents': 0, 'delivery_cents': 0, 'total_cents': 12000}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json quote --customer regular --fulfillment express --item hoodie:3
+  -> {'fulfillment': 'express', 'subtotal_cents': 12000, 'discount_cents': 0, 'delivery_cents': 1200, 'total_cents': 13200}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json place --customer student --fulfillment express --item hoodie:2
+  -> {'order_id': 'ORD-0001', 'status': 'placed', 'fulfillment': 'express', 'subtotal_cents': 8000, 'discount_cents': 800, 'delivery_cents': 1200, 'total_cents': 8400}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json cancel ORD-0001
+  -> {'order_id': 'ORD-0001', 'status': 'cancelled', 'fulfillment': 'express', 'subtotal_cents': 8000, 'discount_cents': 800, 'delivery_cents': 1200, 'total_cents': 8400}
+  exit status: 0
+$ python -m supplydesk --data .supplydesk/cr01-demo.json quote --fulfillment Express --item mug:1
+  -> __main__.py quote: error: argument --fulfillment: invalid choice: 'Express' (choose from 'pickup', 'delivery', 'express')
+  exit status: 2
