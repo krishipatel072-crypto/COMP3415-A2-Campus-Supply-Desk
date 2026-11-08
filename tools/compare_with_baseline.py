@@ -1,7 +1,7 @@
 """Differential check: compare the current OrderService with the original one.
 
-Loads supplydesk/service.py and storage.py from a Git revision (default: the
-`baseline` tag, i.e. the untouched starter code), then runs the same random
+Loads supplydesk/service.py and storage.py from a Git revision (default:
+82ed75e, the untouched starter commit, present in every clone), then runs the same random
 sequences of valid and invalid operations against both implementations.
 After every step it compares the returned value (or the exception type and
 message) and the bytes of the save file.
@@ -9,7 +9,7 @@ message) and the bytes of the save file.
 Intended for checking behavior-preserving refactorings. Once intended
 behavior changes are made (defect fixes, CR-01) differences are expected.
 
-    python tools/compare_with_baseline.py [--ref baseline] [--runs 2000]
+    python tools/compare_with_baseline.py [--ref 82ed75e] [--runs 2000]
 """
 
 import argparse
@@ -24,6 +24,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from supplydesk.service import OrderService as CurrentService  # noqa: E402
+
+STARTER_COMMIT = "82ed75e"  # original starter code
 
 PRODUCTS = ["notebook", "pen-pack", "hoodie", "mug", "bag", "laptop", None]
 QUANTITIES = [1, 1, 2, 2, 3, 4, 5, 6, 9, 20, 99, 100, 0, -1, True, 2.0, "2", None]
@@ -89,7 +91,7 @@ def call(service, kind, args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--ref", default="baseline")
+    parser.add_argument("--ref", default=STARTER_COMMIT)
     parser.add_argument("--runs", type=int, default=2000)
     parser.add_argument("--steps", type=int, default=15)
     parser.add_argument("--seed", type=int, default=3415)

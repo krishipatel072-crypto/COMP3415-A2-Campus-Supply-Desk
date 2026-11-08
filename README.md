@@ -116,12 +116,13 @@ Recorded results for each stage of the work are in `evidence/`.
 
 ### Differential check (optional)
 
-`tools/compare_with_baseline.py` runs the same 30,000 random operations against the original starter service (Git tag `baseline`) and the current one, and reports any difference in results, error messages or saved files. It was used to confirm that the refactorings preserved behavior; after the defect fixes and CR-01, differences are expected. It needs Git and the `baseline` tag:
+`tools/compare_with_baseline.py` runs the same 30,000 random operations against the original starter service (commit `82ed75e`) and the current one, and reports any difference in results, error messages or saved files. It was used to confirm that the refactorings preserved behavior; after the defect fixes and CR-01, differences are expected. It needs Git and a clone of this repository:
 
 ```sh
-git fetch --tags
 python tools/compare_with_baseline.py
 ```
+
+To repeat the post-refactoring check exactly, compare the refactored commit against the starter by checking out `bed6564` first.
 
 The supplied tests use temporary files and do not change your saved orders or stock.
 
