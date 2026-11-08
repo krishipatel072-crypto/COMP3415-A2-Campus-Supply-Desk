@@ -1,0 +1,66 @@
+EXPERIMENT: student discount computed as round(subtotal * 0.10) instead of integer half-up rounding
+Change tried (not committed): _discount_cents returns round(subtotal * STUDENT_DISCOUNT_RATE), STUDENT_DISCOUNT_RATE = 0.10
+Based on commit: 00b6394
+Command: python -m unittest tests.test_pricing -v
+----------------------------------------------------------------------
+test_discount_rounds_half_a_cent_upward (tests.test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) ... 
+  test_discount_rounds_half_a_cent_upward (tests.test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) (price=5005) ... FAIL
+  test_discount_rounds_half_a_cent_upward (tests.test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) (price=5025) ... FAIL
+test_empty_item_list_is_rejected (tests.test_pricing.PricingBoundaryTests.test_empty_item_list_is_rejected) ... ok
+test_free_delivery_threshold_uses_amount_after_discount (tests.test_pricing.PricingBoundaryTests.test_free_delivery_threshold_uses_amount_after_discount) ... ok
+test_one_more_than_available_stock_is_rejected (tests.test_pricing.PricingBoundaryTests.test_one_more_than_available_stock_is_rejected) ... ok
+test_ordering_all_remaining_stock_is_allowed (tests.test_pricing.PricingBoundaryTests.test_ordering_all_remaining_stock_is_allowed) ... ok
+test_quantity_limits_one_and_ninety_nine_are_accepted (tests.test_pricing.PricingBoundaryTests.test_quantity_limits_one_and_ninety_nine_are_accepted) ... ok
+test_quantity_zero_and_one_hundred_are_rejected (tests.test_pricing.PricingBoundaryTests.test_quantity_zero_and_one_hundred_are_rejected) ... ok
+test_standard_delivery_is_charged_just_below_one_hundred_dollars (tests.test_pricing.PricingBoundaryTests.test_standard_delivery_is_charged_just_below_one_hundred_dollars) ... ok
+test_standard_delivery_is_free_at_exactly_one_hundred_dollars (tests.test_pricing.PricingBoundaryTests.test_standard_delivery_is_free_at_exactly_one_hundred_dollars) ... ok
+test_student_discount_applies_at_exactly_fifty_dollars (tests.test_pricing.PricingBoundaryTests.test_student_discount_applies_at_exactly_fifty_dollars) ... FAIL
+test_student_just_below_fifty_dollars_gets_no_discount (tests.test_pricing.PricingBoundaryTests.test_student_just_below_fifty_dollars_gets_no_discount) ... ok
+test_pickup_is_free (tests.test_pricing.PricingNormalTests.test_pickup_is_free) ... ok
+test_quote_lists_every_line_with_name_price_and_line_total (tests.test_pricing.PricingNormalTests.test_quote_lists_every_line_with_name_price_and_line_total) ... ok
+test_regular_customer_never_gets_a_discount (tests.test_pricing.PricingNormalTests.test_regular_customer_never_gets_a_discount) ... ok
+test_spec_example_regular_delivery_three_hoodies_ships_free (tests.test_pricing.PricingNormalTests.test_spec_example_regular_delivery_three_hoodies_ships_free) ... ok
+test_student_above_threshold_gets_ten_percent_off (tests.test_pricing.PricingNormalTests.test_student_above_threshold_gets_ten_percent_off) ... ok
+
+======================================================================
+FAIL: test_discount_rounds_half_a_cent_upward (tests.test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) (price=5005)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_pricing.py", line 87, in test_discount_rounds_half_a_cent_upward
+    self.assertEqual(quote["discount_cents"], expected_discount)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 501
+
+======================================================================
+FAIL: test_discount_rounds_half_a_cent_upward (tests.test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) (price=5025)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_pricing.py", line 87, in test_discount_rounds_half_a_cent_upward
+    self.assertEqual(quote["discount_cents"], expected_discount)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 503
+
+======================================================================
+FAIL: test_student_discount_applies_at_exactly_fifty_dollars (tests.test_pricing.PricingBoundaryTests.test_student_discount_applies_at_exactly_fifty_dollars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_pricing.py", line 51, in test_student_discount_applies_at_exactly_fifty_dollars
+    self.assertEqual(quote["discount_cents"], 500)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 500
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.018s
+
+FAILED (failures=3)
+----------------------------------------------------------------------
+Why: Python's round() uses round-half-to-even on a binary float.
+round(5005 * 0.10) = 500   spec (half up) = 501
+round(5025 * 0.10) = 502   spec (half up) = 503
+5005 * 0.10 = 500.5
+Differential check against baseline:
+Mismatches (result, error or saved file): 0
+Note: the differential check reports 0 mismatches because every bundled price
+is a multiple of 250 cents, so 10% is always a whole number of cents. Only the
+custom-catalog test (test_discount_rounds_half_a_cent_upward) reaches the
+rounding rule. Result: change rejected, integer half-up rounding kept.
