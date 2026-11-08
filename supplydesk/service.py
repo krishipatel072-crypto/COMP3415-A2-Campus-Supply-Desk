@@ -2,6 +2,30 @@
 
 from supplydesk.storage import JsonStore
 
+# Business rules from FUNCTIONAL_SPEC.md. Money values are integer cents.
+REGULAR_CUSTOMER = "regular"
+STUDENT_CUSTOMER = "student"
+CUSTOMER_TYPES = (REGULAR_CUSTOMER, STUDENT_CUSTOMER)
+DEFAULT_CUSTOMER_TYPE = REGULAR_CUSTOMER
+
+PICKUP = "pickup"
+STANDARD_DELIVERY = "delivery"
+FULFILLMENT_OPTIONS = (PICKUP, STANDARD_DELIVERY)
+DEFAULT_FULFILLMENT = PICKUP
+
+MIN_QUANTITY = 1
+MAX_QUANTITY = 99
+
+STUDENT_DISCOUNT_PERCENT = 10
+STUDENT_DISCOUNT_MIN_SUBTOTAL_CENTS = 5000
+STANDARD_DELIVERY_FEE_CENTS = 600
+FREE_STANDARD_DELIVERY_MIN_CENTS = 10000
+
+ORDER_ID_PREFIX = "ORD-"
+ORDER_NUMBER_DIGITS = 4
+PLACED = "placed"
+CANCELLED = "cancelled"
+
 
 class OrderService:
     def __init__(self, state_path=".supplydesk/state.json"):
@@ -10,16 +34,16 @@ class OrderService:
     def catalog(self):
         return self.store.load()["catalog"]
 
-    def quote(self, customer_type, items, fulfillment="pickup"):
+    def quote(self, customer_type, items, fulfillment=DEFAULT_FULFILLMENT):
         state = self.store.load()
         return _price_request(state["catalog"], customer_type, items, fulfillment)
 
-    def place_order(self, customer_type, items, fulfillment="pickup"):
+    def place_order(self, customer_type, items, fulfillment=DEFAULT_FULFILLMENT):
         state = self.store.load()
         priced = _price_request(state["catalog"], customer_type, items, fulfillment)
         order = {
-            "order_id": "ORD-" + str(state["next_order_number"]).zfill(4),
-            "status": "placed",
+            "order_id": _format_order_id(state["next_order_number"]),
+            "status": PLACED,
             **priced,
         }
         _adjust_stock(state["catalog"], order["items"], -1)
@@ -38,7 +62,7 @@ class OrderService:
         state = self.store.load()
         order = _find_order(state["orders"], order_id)
         _adjust_stock(state["catalog"], order["items"], +1)
-        order["status"] = "cancelled"
+        order["status"] = CANCELLED
         self.store.save(state)
         return order
 
@@ -66,10 +90,10 @@ def _price_request(catalog, customer_type, items, fulfillment):
 
 
 def _check_request_shape(customer_type, items, fulfillment):
-    if customer_type not in ("regular", "student"):
-        raise ValueError("Customer type must be regular or student.")
-    if fulfillment not in ("pickup", "delivery"):
-        raise ValueError("Fulfillment must be pickup or delivery.")
+    if customer_type not in CUSTOMER_TYPES:
+        raise ValueError("Customer type must be " + _either(CUSTOMER_TYPES) + ".")
+    if fulfillment not in FULFILLMENT_OPTIONS:
+        raise ValueError("Fulfillment must be " + _either(FULFILLMENT_OPTIONS) + ".")
     if not isinstance(items, list) or not items:
         raise ValueError("An order must contain at least one item.")
 
@@ -82,8 +106,8 @@ def _build_line(catalog, item):
     if product is None:
         raise ValueError("Unknown product.")
     quantity = item.get("quantity")
-    if type(quantity) is not int or quantity < 1 or quantity > 99:
-        raise ValueError("Quantity must be an integer from 1 to 99.")
+    if type(quantity) is not int or not MIN_QUANTITY <= quantity <= MAX_QUANTITY:
+        raise ValueError(f"Quantity must be an integer from {MIN_QUANTITY} to {MAX_QUANTITY}.")
     if quantity > product["stock"]:
         raise ValueError("Not enough stock for " + product["product_id"] + ".")
     return {
@@ -96,15 +120,34 @@ def _build_line(catalog, item):
 
 
 def _discount_cents(customer_type, subtotal):
-    if customer_type == "student" and subtotal > 5000:
-        return (subtotal * 10 + 50) // 100
+    if customer_type == STUDENT_CUSTOMER and subtotal > STUDENT_DISCOUNT_MIN_SUBTOTAL_CENTS:
+        return _percent_of(subtotal, STUDENT_DISCOUNT_PERCENT)
     return 0
 
 
 def _delivery_cents(fulfillment, merchandise_after_discount):
-    if fulfillment == "delivery" and merchandise_after_discount < 10000:
-        return 600
+    if (fulfillment == STANDARD_DELIVERY
+            and merchandise_after_discount < FREE_STANDARD_DELIVERY_MIN_CENTS):
+        return STANDARD_DELIVERY_FEE_CENTS
     return 0
+
+
+def _percent_of(amount_cents, percent):
+    """Return percent of an amount in whole cents, rounding half a cent up.
+
+    Integer-only on purpose: adding half the divisor (50 of 100) before floor
+    division rounds .5 upward, with no binary floating point involved.
+    """
+    return (amount_cents * percent + 50) // 100
+
+
+def _format_order_id(order_number):
+    return ORDER_ID_PREFIX + str(order_number).zfill(ORDER_NUMBER_DIGITS)
+
+
+def _either(options):
+    """("a", "b", "c") -> "a, b or c"."""
+    return ", ".join(options[:-1]) + " or " + options[-1]
 
 
 def _find_product(catalog, product_id):
