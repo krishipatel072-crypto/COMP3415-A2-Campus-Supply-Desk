@@ -1,0 +1,117 @@
+BASELINE: original starter code + new tests (before any refactoring)
+Commit: 0506efc (Add safety-net tests for pricing, validation, orders, CLI and menu)
+Command: python -m unittest discover -s tests -v
+Python: 3.13.18
+Date: 2026-11-08 16:31 EST
+----------------------------------------------------------------------
+test_command_session_output_is_unchanged (test_characterization.GoldenMasterTests.test_command_session_output_is_unchanged) ... ok
+test_full_menu_session_output_is_unchanged (test_characterization.GoldenMasterTests.test_full_menu_session_output_is_unchanged) ... ok
+test_badly_formed_options_are_rejected_by_the_parser (test_cli.CommandTests.test_badly_formed_options_are_rejected_by_the_parser) ... ok
+test_catalog_command_shows_current_stock (test_cli.CommandTests.test_catalog_command_shows_current_stock) ... ok
+test_no_command_opens_the_menu (test_cli.CommandTests.test_no_command_opens_the_menu) ... ok
+test_omitted_options_default_to_regular_and_pickup (test_cli.CommandTests.test_omitted_options_default_to_regular_and_pickup) ... ok
+test_place_show_orders_and_cancel_round_trip (test_cli.CommandTests.test_place_show_orders_and_cancel_round_trip) ... ok
+test_quote_command_prints_json_in_cents_and_saves_nothing (test_cli.CommandTests.test_quote_command_prints_json_in_cents_and_saves_nothing) ... ok
+test_rejected_request_exits_with_status_2_and_an_error (test_cli.CommandTests.test_rejected_request_exits_with_status_2_and_an_error) ... ok
+test_repeated_item_options_build_one_request (test_cli.CommandTests.test_repeated_item_options_build_one_request) ... ok
+test_spec_example_student_delivery_two_hoodies (test_cli.CommandTests.test_spec_example_student_delivery_two_hoodies) ... ok
+test_unknown_order_exits_with_status_2 (test_cli.CommandTests.test_unknown_order_exits_with_status_2) ... ok
+test_blank_answers_default_to_regular_and_pickup (test_menu.MenuTests.test_blank_answers_default_to_regular_and_pickup) ... ok
+test_cancellation_requires_confirmation (test_menu.MenuTests.test_cancellation_requires_confirmation) ... ok
+test_confirming_placement_saves_the_order (test_menu.MenuTests.test_confirming_placement_saves_the_order) ... ok
+test_declining_placement_leaves_saved_data_unchanged (test_menu.MenuTests.test_declining_placement_leaves_saved_data_unchanged) ... ok
+test_end_of_input_and_ctrl_c_exit_cleanly (test_menu.MenuTests.test_end_of_input_and_ctrl_c_exit_cleanly) ... ok
+test_history_and_lookup (test_menu.MenuTests.test_history_and_lookup) ... ok
+test_invalid_request_is_reported_and_menu_stays_available (test_menu.MenuTests.test_invalid_request_is_reported_and_menu_stays_available) ... ok
+test_money_formats_cents_as_dollars (test_menu.MenuTests.test_money_formats_cents_as_dollars) ... ok
+test_non_numeric_quantity_asks_to_reenter_the_item (test_menu.MenuTests.test_non_numeric_quantity_asks_to_reenter_the_item) ... ok
+test_quote_shows_dollars_and_creates_no_order (test_menu.MenuTests.test_quote_shows_dollars_and_creates_no_order) ... ok
+test_unknown_option_is_explained (test_menu.MenuTests.test_unknown_option_is_explained) ... ok
+test_cancel_restores_stock_and_keeps_the_original_record (test_orders.CancellationTests.test_cancel_restores_stock_and_keeps_the_original_record) ... ok
+test_cancelling_an_already_cancelled_order_changes_nothing (test_orders.CancellationTests.test_cancelling_an_already_cancelled_order_changes_nothing) ... FAIL
+test_historical_prices_are_not_recalculated (test_orders.PlacementTests.test_historical_prices_are_not_recalculated) ... ok
+test_history_lists_all_orders_in_placement_order (test_orders.PlacementTests.test_history_lists_all_orders_in_placement_order) ... ok
+test_order_ids_increase_and_are_never_reused (test_orders.PlacementTests.test_order_ids_increase_and_are_never_reused) ... ok
+test_placement_deducts_only_ordered_units (test_orders.PlacementTests.test_placement_deducts_only_ordered_units) ... ok
+test_reopening_the_save_file_preserves_history_and_stock (test_orders.PlacementTests.test_reopening_the_save_file_preserves_history_and_stock) ... ok
+test_saved_file_uses_schema_version_one (test_orders.PlacementTests.test_saved_file_uses_schema_version_one) ... ok
+test_quote_and_placed_order_agree (test_orders.QuoteTests.test_quote_and_placed_order_agree) ... ok
+test_quote_creates_no_save_file_order_or_stock_change (test_orders.QuoteTests.test_quote_creates_no_save_file_order_or_stock_change) ... ok
+test_quote_does_not_reserve_stock_and_placement_rechecks_it (test_orders.QuoteTests.test_quote_does_not_reserve_stock_and_placement_rechecks_it) ... ok
+test_result_fields_keep_their_documented_order (test_orders.QuoteTests.test_result_fields_keep_their_documented_order) ... ok
+test_viewing_the_catalog_creates_no_save_file (test_orders.QuoteTests.test_viewing_the_catalog_creates_no_save_file) ... ok
+test_discount_rounds_half_a_cent_upward (test_pricing.PricingBoundaryTests.test_discount_rounds_half_a_cent_upward) ... ok
+test_empty_item_list_is_rejected (test_pricing.PricingBoundaryTests.test_empty_item_list_is_rejected) ... ok
+test_free_delivery_threshold_uses_amount_after_discount (test_pricing.PricingBoundaryTests.test_free_delivery_threshold_uses_amount_after_discount) ... ok
+test_one_more_than_available_stock_is_rejected (test_pricing.PricingBoundaryTests.test_one_more_than_available_stock_is_rejected) ... ok
+test_ordering_all_remaining_stock_is_allowed (test_pricing.PricingBoundaryTests.test_ordering_all_remaining_stock_is_allowed) ... ok
+test_quantity_limits_one_and_ninety_nine_are_accepted (test_pricing.PricingBoundaryTests.test_quantity_limits_one_and_ninety_nine_are_accepted) ... ok
+test_quantity_zero_and_one_hundred_are_rejected (test_pricing.PricingBoundaryTests.test_quantity_zero_and_one_hundred_are_rejected) ... ok
+test_standard_delivery_is_charged_just_below_one_hundred_dollars (test_pricing.PricingBoundaryTests.test_standard_delivery_is_charged_just_below_one_hundred_dollars) ... ok
+test_standard_delivery_is_free_at_exactly_one_hundred_dollars (test_pricing.PricingBoundaryTests.test_standard_delivery_is_free_at_exactly_one_hundred_dollars) ... ok
+test_student_discount_applies_at_exactly_fifty_dollars (test_pricing.PricingBoundaryTests.test_student_discount_applies_at_exactly_fifty_dollars) ... FAIL
+test_student_just_below_fifty_dollars_gets_no_discount (test_pricing.PricingBoundaryTests.test_student_just_below_fifty_dollars_gets_no_discount) ... ok
+test_pickup_is_free (test_pricing.PricingNormalTests.test_pickup_is_free) ... ok
+test_quote_lists_every_line_with_name_price_and_line_total (test_pricing.PricingNormalTests.test_quote_lists_every_line_with_name_price_and_line_total) ... ok
+test_regular_customer_never_gets_a_discount (test_pricing.PricingNormalTests.test_regular_customer_never_gets_a_discount) ... ok
+test_spec_example_regular_delivery_three_hoodies_ships_free (test_pricing.PricingNormalTests.test_spec_example_regular_delivery_three_hoodies_ships_free) ... ok
+test_student_above_threshold_gets_ten_percent_off (test_pricing.PricingNormalTests.test_student_above_threshold_gets_ten_percent_off) ... ok
+test_cancel_order_restores_stock (test_smoke.OrderSmokeTests.test_cancel_order_restores_stock) ... ok
+test_order_can_be_reopened (test_smoke.OrderSmokeTests.test_order_can_be_reopened) ... ok
+test_regular_pickup_quote (test_smoke.OrderSmokeTests.test_regular_pickup_quote) ... ok
+test_student_delivery_quote (test_smoke.OrderSmokeTests.test_student_delivery_quote) ... ok
+test_customer_type_must_be_exactly_regular_or_student (test_validation.InvalidRequestTests.test_customer_type_must_be_exactly_regular_or_student) ... ok
+test_duplicate_lines_within_stock_are_kept_as_separate_lines (test_validation.InvalidRequestTests.test_duplicate_lines_within_stock_are_kept_as_separate_lines) ... ok
+test_each_item_must_be_a_dictionary (test_validation.InvalidRequestTests.test_each_item_must_be_a_dictionary) ... ok
+test_fulfillment_must_be_exactly_pickup_or_delivery (test_validation.InvalidRequestTests.test_fulfillment_must_be_exactly_pickup_or_delivery) ... ok
+test_items_must_be_a_nonempty_list (test_validation.InvalidRequestTests.test_items_must_be_a_nonempty_list) ... ok
+test_one_bad_line_rejects_the_whole_request (test_validation.InvalidRequestTests.test_one_bad_line_rejects_the_whole_request) ... ok
+test_place_rejects_duplicate_lines_over_combined_stock (test_validation.InvalidRequestTests.test_place_rejects_duplicate_lines_over_combined_stock) ... FAIL
+test_quantity_must_be_a_real_integer_when_calling_the_service (test_validation.InvalidRequestTests.test_quantity_must_be_a_real_integer_when_calling_the_service) ... ok
+test_quote_rejects_duplicate_lines_over_combined_stock (test_validation.InvalidRequestTests.test_quote_rejects_duplicate_lines_over_combined_stock) ... FAIL
+test_rejected_placement_leaves_saved_data_unchanged (test_validation.InvalidRequestTests.test_rejected_placement_leaves_saved_data_unchanged) ... ok
+test_unknown_or_missing_product_id_is_rejected (test_validation.InvalidRequestTests.test_unknown_or_missing_product_id_is_rejected) ... ok
+test_malformed_save_file_raises_instead_of_resetting (test_validation.SaveFileErrorTests.test_malformed_save_file_raises_instead_of_resetting) ... ok
+test_cancel_unknown_order_raises_and_changes_nothing (test_validation.UnknownOrderTests.test_cancel_unknown_order_raises_and_changes_nothing) ... ok
+test_get_unknown_order_raises_value_error (test_validation.UnknownOrderTests.test_get_unknown_order_raises_value_error) ... ok
+
+======================================================================
+FAIL: test_cancelling_an_already_cancelled_order_changes_nothing (test_orders.CancellationTests.test_cancelling_an_already_cancelled_order_changes_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_orders.py", line 116, in test_cancelling_an_already_cancelled_order_changes_nothing
+    self.assertEqual(self.stock_of("pen-pack"), 10)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 12 != 10
+
+======================================================================
+FAIL: test_student_discount_applies_at_exactly_fifty_dollars (test_pricing.PricingBoundaryTests.test_student_discount_applies_at_exactly_fifty_dollars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_pricing.py", line 51, in test_student_discount_applies_at_exactly_fifty_dollars
+    self.assertEqual(quote["discount_cents"], 500)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 500
+
+======================================================================
+FAIL: test_place_rejects_duplicate_lines_over_combined_stock (test_validation.InvalidRequestTests.test_place_rejects_duplicate_lines_over_combined_stock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_validation.py", line 59, in test_place_rejects_duplicate_lines_over_combined_stock
+    with self.assertRaisesRegex(ValueError, "Not enough stock for hoodie"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_quote_rejects_duplicate_lines_over_combined_stock (test_validation.InvalidRequestTests.test_quote_rejects_duplicate_lines_over_combined_stock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/COMP3415-A2-Campus-Supply-Desk/tests/test_validation.py", line 55, in test_quote_rejects_duplicate_lines_over_combined_stock
+    with self.assertRaisesRegex(ValueError, "Not enough stock for hoodie"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 70 tests in 0.098s
+
+FAILED (failures=4)
