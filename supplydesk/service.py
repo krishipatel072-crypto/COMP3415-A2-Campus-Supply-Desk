@@ -74,7 +74,9 @@ def _price_request(catalog, customer_type, items, fulfillment):
     Raises ValueError for an invalid request; changes nothing.
     """
     _check_request_shape(customer_type, items, fulfillment)
-    lines = [_build_line(catalog, item) for item in items]
+    lines = []
+    for item in items:
+        lines.append(_build_line(catalog, item, lines))
     subtotal = sum(line["line_total_cents"] for line in lines)
     discount = _discount_cents(customer_type, subtotal)
     delivery = _delivery_cents(fulfillment, subtotal - discount)
@@ -98,8 +100,12 @@ def _check_request_shape(customer_type, items, fulfillment):
         raise ValueError("An order must contain at least one item.")
 
 
-def _build_line(catalog, item):
-    """Validate one requested item and return its priced order line."""
+def _build_line(catalog, item, earlier_lines):
+    """Validate one requested item and return its priced order line.
+
+    Stock is checked against this line plus any earlier lines in the same
+    request for the same product, so duplicate lines cannot oversell.
+    """
     if not isinstance(item, dict):
         raise ValueError("Each item must contain a product_id and quantity.")
     product = _find_product(catalog, item.get("product_id"))
@@ -108,7 +114,9 @@ def _build_line(catalog, item):
     quantity = item.get("quantity")
     if type(quantity) is not int or not MIN_QUANTITY <= quantity <= MAX_QUANTITY:
         raise ValueError(f"Quantity must be an integer from {MIN_QUANTITY} to {MAX_QUANTITY}.")
-    if quantity > product["stock"]:
+    already_requested = sum(line["quantity"] for line in earlier_lines
+                            if line["product_id"] == product["product_id"])
+    if already_requested + quantity > product["stock"]:
         raise ValueError("Not enough stock for " + product["product_id"] + ".")
     return {
         "product_id": product["product_id"],
