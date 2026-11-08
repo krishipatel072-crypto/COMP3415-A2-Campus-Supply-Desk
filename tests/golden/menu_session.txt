@@ -1,0 +1,227 @@
+Campus Supply Desk | All prices are CAD. Orders are saved automatically.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+
+Quote - not placed
+Customer: student | Fulfillment: delivery
+  Campus hoodie x 2: $80.00
+  Campus mug x 1: $15.00
+Subtotal: $95.00
+Discount: $9.50
+Delivery: $6.00
+Total: $91.50
+Quote only: no stock reserved and no order created.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+Please enter a whole number. Re-enter this item.
+
+Quote - not placed
+Customer: regular | Fulfillment: pickup
+  Notebook x 3: $15.00
+Subtotal: $15.00
+Discount: $0.00
+Delivery: $0.00
+Total: $15.00
+
+ORD-0001 - placed
+Customer: regular | Fulfillment: pickup
+  Notebook x 3: $15.00
+Subtotal: $15.00
+Discount: $0.00
+Delivery: $0.00
+Total: $15.00
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       17
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+
+Quote - not placed
+Customer: regular | Fulfillment: pickup
+  Canvas bag x 1: $25.00
+Subtotal: $25.00
+Discount: $0.00
+Delivery: $0.00
+Total: $25.00
+Order not placed.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+ORD-0001 - placed
+Customer: regular | Fulfillment: pickup
+  Notebook x 3: $15.00
+Subtotal: $15.00
+Discount: $0.00
+Delivery: $0.00
+Total: $15.00
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+ORD-0001 - placed
+Customer: regular | Fulfillment: pickup
+  Notebook x 3: $15.00
+Subtotal: $15.00
+Discount: $0.00
+Delivery: $0.00
+Total: $15.00
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+ORD-0001 - cancelled
+Customer: regular | Fulfillment: pickup
+  Notebook x 3: $15.00
+Subtotal: $15.00
+Discount: $0.00
+Delivery: $0.00
+Total: $15.00
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+Cancellation abandoned.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+Error: Unknown product.
+Returning to the menu. Check your input or state file before retrying.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+Error: Not enough stock for bag.
+Returning to the menu. Check your input or state file before retrying.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+Choose a number from 0 to 6.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+Goodbye.
+exit=0

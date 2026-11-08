@@ -1,0 +1,240 @@
+$ catalog
+exit=0
+[
+  {
+    "product_id": "notebook",
+    "name": "Notebook",
+    "unit_price_cents": 500,
+    "stock": 20
+  },
+  {
+    "product_id": "pen-pack",
+    "name": "Pen pack",
+    "unit_price_cents": 750,
+    "stock": 10
+  },
+  {
+    "product_id": "hoodie",
+    "name": "Campus hoodie",
+    "unit_price_cents": 4000,
+    "stock": 5
+  },
+  {
+    "product_id": "mug",
+    "name": "Campus mug",
+    "unit_price_cents": 1500,
+    "stock": 8
+  },
+  {
+    "product_id": "bag",
+    "name": "Canvas bag",
+    "unit_price_cents": 2500,
+    "stock": 4
+  }
+]
+$ quote --customer student --fulfillment delivery --item hoodie:2
+exit=0
+{
+  "customer_type": "student",
+  "fulfillment": "delivery",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 600,
+  "total_cents": 7800
+}
+$ place --fulfillment delivery --item hoodie:3
+exit=0
+{
+  "order_id": "ORD-0001",
+  "status": "placed",
+  "customer_type": "regular",
+  "fulfillment": "delivery",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 3,
+      "line_total_cents": 12000
+    }
+  ],
+  "subtotal_cents": 12000,
+  "discount_cents": 0,
+  "delivery_cents": 0,
+  "total_cents": 12000
+}
+$ place --item notebook:2 --item pen-pack:1
+exit=0
+{
+  "order_id": "ORD-0002",
+  "status": "placed",
+  "customer_type": "regular",
+  "fulfillment": "pickup",
+  "items": [
+    {
+      "product_id": "notebook",
+      "name": "Notebook",
+      "unit_price_cents": 500,
+      "quantity": 2,
+      "line_total_cents": 1000
+    },
+    {
+      "product_id": "pen-pack",
+      "name": "Pen pack",
+      "unit_price_cents": 750,
+      "quantity": 1,
+      "line_total_cents": 750
+    }
+  ],
+  "subtotal_cents": 1750,
+  "discount_cents": 0,
+  "delivery_cents": 0,
+  "total_cents": 1750
+}
+$ quote --item bag:9
+exit=2
+Error: Not enough stock for bag.
+$ cancel ORD-0001
+exit=0
+{
+  "order_id": "ORD-0001",
+  "status": "cancelled",
+  "customer_type": "regular",
+  "fulfillment": "delivery",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 3,
+      "line_total_cents": 12000
+    }
+  ],
+  "subtotal_cents": 12000,
+  "discount_cents": 0,
+  "delivery_cents": 0,
+  "total_cents": 12000
+}
+$ orders
+exit=0
+[
+  {
+    "order_id": "ORD-0001",
+    "status": "cancelled",
+    "customer_type": "regular",
+    "fulfillment": "delivery",
+    "items": [
+      {
+        "product_id": "hoodie",
+        "name": "Campus hoodie",
+        "unit_price_cents": 4000,
+        "quantity": 3,
+        "line_total_cents": 12000
+      }
+    ],
+    "subtotal_cents": 12000,
+    "discount_cents": 0,
+    "delivery_cents": 0,
+    "total_cents": 12000
+  },
+  {
+    "order_id": "ORD-0002",
+    "status": "placed",
+    "customer_type": "regular",
+    "fulfillment": "pickup",
+    "items": [
+      {
+        "product_id": "notebook",
+        "name": "Notebook",
+        "unit_price_cents": 500,
+        "quantity": 2,
+        "line_total_cents": 1000
+      },
+      {
+        "product_id": "pen-pack",
+        "name": "Pen pack",
+        "unit_price_cents": 750,
+        "quantity": 1,
+        "line_total_cents": 750
+      }
+    ],
+    "subtotal_cents": 1750,
+    "discount_cents": 0,
+    "delivery_cents": 0,
+    "total_cents": 1750
+  }
+]
+$ show ORD-0002
+exit=0
+{
+  "order_id": "ORD-0002",
+  "status": "placed",
+  "customer_type": "regular",
+  "fulfillment": "pickup",
+  "items": [
+    {
+      "product_id": "notebook",
+      "name": "Notebook",
+      "unit_price_cents": 500,
+      "quantity": 2,
+      "line_total_cents": 1000
+    },
+    {
+      "product_id": "pen-pack",
+      "name": "Pen pack",
+      "unit_price_cents": 750,
+      "quantity": 1,
+      "line_total_cents": 750
+    }
+  ],
+  "subtotal_cents": 1750,
+  "discount_cents": 0,
+  "delivery_cents": 0,
+  "total_cents": 1750
+}
+$ show ORD-0404
+exit=2
+Error: Unknown order: ORD-0404
+$ catalog
+exit=0
+[
+  {
+    "product_id": "notebook",
+    "name": "Notebook",
+    "unit_price_cents": 500,
+    "stock": 18
+  },
+  {
+    "product_id": "pen-pack",
+    "name": "Pen pack",
+    "unit_price_cents": 750,
+    "stock": 9
+  },
+  {
+    "product_id": "hoodie",
+    "name": "Campus hoodie",
+    "unit_price_cents": 4000,
+    "stock": 5
+  },
+  {
+    "product_id": "mug",
+    "name": "Campus mug",
+    "unit_price_cents": 1500,
+    "stock": 8
+  },
+  {
+    "product_id": "bag",
+    "name": "Canvas bag",
+    "unit_price_cents": 2500,
+    "stock": 4
+  }
+]
