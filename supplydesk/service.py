@@ -120,7 +120,7 @@ def _build_line(catalog, item):
 
 
 def _discount_cents(customer_type, subtotal):
-    if customer_type == STUDENT_CUSTOMER and subtotal > STUDENT_DISCOUNT_MIN_SUBTOTAL_CENTS:
+    if customer_type == STUDENT_CUSTOMER and subtotal >= STUDENT_DISCOUNT_MIN_SUBTOTAL_CENTS:
         return _percent_of(subtotal, STUDENT_DISCOUNT_PERCENT)
     return 0
 
